@@ -11,16 +11,11 @@ namespace MovieLibrary
         private static NLog.Logger logger = NLogBuilder.ConfigureNLog(Directory.GetCurrentDirectory() + "\\nlog.config").GetCurrentClassLogger();
         static void Main(string[] args)
         {
-            
+            string movieFilePath = Directory.GetCurrentDirectory() + "\\movies.csv";
+
             logger.Info("Program started");
 
-            Movie movie = new Movie
-            {
-                movieId = 1,
-                title = "Jeff's Killer Movie (2019)",
-                genres = new List<string> { "Action", "Romance", "Comedy" }
-            };
-            Console.WriteLine(movie.Display());
+            MovieFile movieFile = new MovieFile(movieFilePath);
 
             logger.Info("Program ended");
         }
