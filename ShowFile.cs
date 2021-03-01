@@ -6,44 +6,46 @@ using NLog.Web;
 
 namespace MovieLibrary
 {
-    public class MovieFile
+    public class ShowFile
     {
         public string filePath { get; set; }
-        public List<Movie> Movies { get; set; }
+        public List<Show> Shows { get; set; }
         private static NLog.Logger logger = NLogBuilder.ConfigureNLog(Directory.GetCurrentDirectory() + "\\nlog.config").GetCurrentClassLogger();
 
-        public MovieFile(string movieFilePath)
+        public ShowFile(string showFilePath)
         {
-            filePath = movieFilePath;
-            Movies = new List<Movie>();
+            filePath = showFilePath;
+            Shows = new List<Show>();
             try
             {
                 StreamReader sr = new StreamReader(filePath);
                 sr.ReadLine();
                 while (!sr.EndOfStream)
                 {
-                    Movie movie = new Movie();
+                    Show show = new Show();
                     string line = sr.ReadLine();
                     int idx = line.IndexOf('"');
                     if (idx == -1)
                     {
-                        string[] movieDetails = line.Split(',');
-                        movie.movieId = UInt64.Parse(movieDetails[0]);
-                        movie.title = movieDetails[1];
-                        movie.genres = movieDetails[2].Split('|').ToList();
+                        string[] showDetails = line.Split(',');
+                        show.id = UInt64.Parse(showDetails[0]);
+                        show.title = showDetails[1];
+                        int[] showDetails2 = new int[]{};
+                        show.season = showDetails2[0];
+                        show.episode = showDetails2[1];
+                        show.writers = showDetails[2].Split('|');
                     }
                     else
                     {
-                        movie.movieId = UInt64.Parse(line.Substring(0, idx - 1));
+                        show.id = UInt64.Parse(line.Substring(0, idx - 1));
                         line = line.Substring(idx + 1);
                         idx = line.IndexOf('"');
-                        movie.title = line.Substring(0, idx);
+                        show.title = line.Substring(0, idx);
                         line = line.Substring(idx + 2);
-                        movie.genres = line.Split('|').ToList();
                     }
                 }
                 sr.Close();
-                logger.Info("Movies in file {Count}", Movies.Count);
+                logger.Info("Shows in file {Count}", Shows.Count);
             }
             catch (Exception ex)
             {
