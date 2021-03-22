@@ -1,6 +1,7 @@
 ﻿using System;
 using NLog.Web;
 using System.IO;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace MovieLibrary
 {
@@ -10,7 +11,11 @@ namespace MovieLibrary
         private static NLog.Logger logger = NLogBuilder.ConfigureNLog(Directory.GetCurrentDirectory() + "\\nlog.config").GetCurrentClassLogger();
         static void Main(string[] args)
         {
-            Console.WriteLine("Which media type would yuo like to display? M - Movie, S -Show, V - Video");
+            // Dependency injection
+            var serviceProvider = new ServiceCollection()
+            .BuildServiceProvider();
+
+            Console.WriteLine("Which media type would you like to display? M - Movie, S -Show, V - Video");
             string mediaChoice = Console.ReadLine();
 
             string movieFilePath = Directory.GetCurrentDirectory() + "\\movies.csv";
@@ -20,29 +25,29 @@ namespace MovieLibrary
             logger.Info("Program started");
 
             MovieFile movieFile = new MovieFile(movieFilePath);
-            ShowFile showFile = new ShowFile(showFilePath); 
+            ShowFile showFile = new ShowFile(showFilePath);
             VideoFile videoFile = new VideoFile(videoFilePath);
 
             do
             {
-                
+
                 if (mediaChoice == "M")
                 {
-                    foreach(Movie m in movieFile.Movies)
+                    foreach (Movie m in movieFile.Movies)
                     {
                         Console.WriteLine(m.Display());
                     }
                 }
                 else if (mediaChoice == "S")
                 {
-                    foreach(Show s in showFile.Shows)
+                    foreach (Show s in showFile.Shows)
                     {
                         Console.WriteLine(s.Display());
                     }
                 }
                 else if (mediaChoice == "V")
                 {
-                    foreach(Video v in videoFile.Videos)
+                    foreach (Video v in videoFile.Videos)
                     {
                         Console.WriteLine(v.Display());
                     }
