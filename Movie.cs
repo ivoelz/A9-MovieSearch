@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace MovieLibrary
 {
-    public class Movie
+    public class Movie : SearchModel
     {
         public UInt64 movieId { get; set; }
         string _title;

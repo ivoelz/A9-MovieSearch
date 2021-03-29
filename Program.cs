@@ -15,6 +15,12 @@ namespace MovieLibrary
             var serviceProvider = new ServiceCollection()
             .BuildServiceProvider();
 
+            Console.WriteLine("Enter a genre");
+            String searchGenre = Console.ReadLine();
+
+            Console.WriteLine("Enter a title");
+            String searchTitle = Console.ReadLine();
+
             Console.WriteLine("Which media type would you like to display? M - Movie, S -Show, V - Video");
             string mediaChoice = Console.ReadLine();
 
